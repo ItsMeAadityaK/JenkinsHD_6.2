@@ -31,14 +31,14 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Start the application in a new terminal
-                    bat 'start cmd /c "npm start"'
+                // Start the application in the background
+                bat 'start /b npm start'
 
-                    // Run Selenium tests in a separate terminal
-                    bat 'start cmd /c "node App.test.js"'
+                // Wait for the app to start
+                sleep(time: 10, unit: 'SECONDS')
 
-                    // Wait for a few seconds using sleep
-                    sleep(time: 10, unit: 'SECONDS')
+                // Run Selenium tests
+                bat 'node seleniumTest.js' // Adjust with your actual test file name
             }
         }
 

@@ -1,25 +1,25 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
+const { Builder, By, until } = require('selenium-webdriver');
 
 async function example() {
     let driver = await new Builder().forBrowser('chrome').build();
     try {
-        // Navigate to your application
+        // Navigate to your React app
         await driver.get('http://localhost:3000');
 
-        // Example test: Check if the title contains 'React'
+        // Wait until the title contains "React"
         let title = await driver.getTitle();
         console.log('Page title is: ' + title);
+
+        // Check if the title includes 'React'
         if (title.includes('React')) {
             console.log('Title test passed');
         } else {
             console.log('Title test failed');
         }
-
-        // Close the browser
-        await driver.quit();
     } catch (error) {
-        console.error('Error in test:', error);
+        console.error('Error during test execution: ', error);
     } finally {
+        // Ensure the driver quits regardless of success or failure
         await driver.quit();
     }
 }

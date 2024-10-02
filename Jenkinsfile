@@ -38,7 +38,7 @@ pipeline {
                 sleep(time: 10, unit: 'SECONDS')
 
                 // Run Selenium tests
-                bat 'node seleniumTest.js' // Adjust with your actual test file name
+                bat 'node Selenium.test.js' // Adjust with your actual test file name
             }
         }
 

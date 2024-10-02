@@ -11,21 +11,34 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install Node.js and npm dependencies
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Build') {
             steps {
                 // Build the React project
-                sh 'npm run build'
+                bat 'npm run build'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                // Build the React project
+                bat 'docker build -t react-app:latest .
             }
         }
 
         stage('Test') {
             steps {
-                // Run tests (e.g., Jest or any other test framework)
-                sh 'npm test'
+                // Start the application in a new terminal
+                    bat 'start cmd /c "npm start"'
+
+                    // Run Selenium tests in a separate terminal
+                    bat 'start cmd /c "node App.test.js"'
+
+                    // Wait for a few seconds using sleep
+                    sleep(time: 10, unit: 'SECONDS')
             }
         }
 

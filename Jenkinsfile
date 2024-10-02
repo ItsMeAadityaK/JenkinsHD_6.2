@@ -25,7 +25,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 // Build the React project
-                bat 'docker build -t react-app:latest .
+                bat 'docker build -t react-app:latest .'
             }
         }
 

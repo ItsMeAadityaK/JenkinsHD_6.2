@@ -21,13 +21,13 @@ pipeline {
                 bat 'npm run build'
             }
         }
-
+/*
         stage('Docker Build') {
             steps {
                 // Build the React project
                 bat 'docker build -t react-app:latest .'
             }
-        }
+        }*/
 
         stage('Test') {
             steps {

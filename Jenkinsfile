@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_AUTH_TOKEN = credentials('nfp_oufca8kT2AFY6WRShNV1qDoHFeL5JJaf3a09')
+        SITE_ID = '4e5d6b28-0fe9-44a6-810c-36d4e385fa8d'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -39,6 +44,16 @@ pipeline {
 
                 // Run Selenium tests
                 bat 'node Selenium.test.js' // Adjust with your actual test file name
+            }
+        }
+
+        stage('Release to Netlify') {
+            steps {
+                script {
+                    echo 'Deploying to Netlify...'
+                    sh "npm run build"
+                    sh "npx netlify deploy --dir=./build --prod --auth=${NETLIFY_AUTH_TOKEN} --site=${SITE_ID}"
+                }
             }
         }
 

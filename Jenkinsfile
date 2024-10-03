@@ -38,7 +38,7 @@ pipeline {
                 script {
                     echo 'Deploying to Netlify...'
                     bat 'npm run build' // Ensure the build directory is fresh
-                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%' // Use global Netlify CLI
+                    bat 'npx netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
                 }
             }
         }

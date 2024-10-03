@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_AUTH_TOKEN = 'nfp_Pb2xGy8kEbrJAmbz7WTGshnhCt3M8V8F8ea6'
-        SITE_ID = '4e5d6b28-0fe9-44a6-810c-36d4e385fa8d'
+        NETLIFY_AUTH_TOKEN = 'nfp_v1ZFAE8wo8ab7XDha8jCg7gwNWsXePeE4046' // Netlify Access Token
+        SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
     }
 
     stages {
@@ -15,35 +15,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Install Node.js and npm dependencies
-                bat 'npm install'
+                bat 'npm install' // Install Node.js and npm dependencies
             }
         }
 
         stage('Build') {
             steps {
-                // Build the React project
-                bat 'npm run build'
+                bat 'npm run build' // Build the React project
             }
         }
-/*
-        stage('Docker Build') {
-            steps {
-                // Build the React project
-                bat 'docker build -t react-app:latest .'
-            }
-        }*/
 
         stage('Test') {
             steps {
-                // Start the application in the background
-                bat 'start /b npm start'
-
-                // Wait for the app to start
-                sleep(time: 10, unit: 'SECONDS')
-
-                // Run Selenium tests
-                bat 'node Selenium.test.js' // Adjust with your actual test file name
+                bat 'start /b npm start' // Start the app in the background
+                sleep(time: 10, unit: 'SECONDS') // Wait for the app to be up
+                bat 'node Selenium.test.js' // Run Selenium tests
             }
         }
 
@@ -51,17 +37,15 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Netlify...'
-                    bat "npm run build"
-                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
+                    bat 'npm run build' // Rebuild the project to ensure the build directory is fresh
+                    bat 'npx netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%' // Deploy to Netlify
                 }
             }
         }
 
         stage('Deploy') {
             steps {
-                // Deploy to a server or hosting (e.g., AWS S3, Netlify, etc.)
-                echo 'Deploying the app...'
-                // For example, you could use AWS CLI or any hosting provider’s CLI here.
+                echo 'App deployment completed.'
             }
         }
     }

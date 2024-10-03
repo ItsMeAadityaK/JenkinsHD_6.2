@@ -52,7 +52,7 @@ pipeline {
                 script {
                     echo 'Deploying to Netlify...'
                     bat "npm run build"
-                    bat "npx netlify deploy --dir=./build --prod --auth=${NETLIFY_AUTH_TOKEN} --site=${SITE_ID}"
+                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
                 }
             }
         }

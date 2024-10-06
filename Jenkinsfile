@@ -40,7 +40,7 @@ pipeline {
                     echo "Netlify Auth Token: %NETLIFY_AUTH_TOKEN%"
                     echo "Netlify Site ID: %SITE_ID%"
                     bat 'npm run build' // Ensure the build directory is fresh
-                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
+                    bat 'C:\\Users\\aadig\\AppData\\Roaming\\npm\\netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
                 }
             }
         }

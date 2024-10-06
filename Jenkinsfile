@@ -74,18 +74,14 @@ pipeline {
             steps {
                 script {
                     echo 'Sending custom deployment event to Datadog...'
-                    bat """
-                    curl -X POST -H "Content-type: application/json" -d "{
-                        \\"title\\": \\"Deployment completed for ${DOCKER_IMAGE}\\",
-                        \\"text\\": \\"Deployment done at %DATE% %TIME%\\",
-                        \\"priority\\": \\"normal\\",
-                        \\"tags\\": [\\"environment:production\\", \\"project:jenkinshd\\"],
-                        \\"alert_type\\": \\"info\\"
-                    }" "https://api.datadoghq.com/api/v1/events?api_key=${DATADOG_API_KEY}"
-                    """
+                    withCredentials([string(credentialsId: 'datadog-api-key', variable: 'DATADOG_API_KEY')]) {
+                        bat """
+                        curl -X POST -H "Content-type: application/json" -d "{\\"title\\": \\"Deployment completed for ${DOCKER_IMAGE}\\", \\"text\\": \\"Deployment done at %DATE% %TIME%\\", \\"priority\\": \\"normal\\", \\"tags\\": [\\"environment:production\\", \\"project:jenkinshd\\"], \\"alert_type\\": \\"info\\"}" "https://api.datadoghq.com/api/v1/events?api_key=%DATADOG_API_KEY%"
+                        """
+                    }
                 }
             }
-        }
+    }
 
         stage('Deploy') {
             steps {

@@ -4,8 +4,7 @@ pipeline {
     environment {
         NETLIFY_AUTH_TOKEN = 'nfp_v1ZFAE8wo8ab7XDha8jCg7gwNWsXePeE4046' // Netlify Access Token
         SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
-        DATADOG_API_KEY = credentials('ce2a7b9df93a621a8a401cd062f01151')
-        DOCKER_IMAGE = 'react-app:latest'
+        DOCKER_IMAGE = 'react-app:latest' // Docker image
     }
 
     stages {
@@ -27,14 +26,11 @@ pipeline {
             }
         }
 
-        
         stage('Docker Build') {
             steps {
-                // Build the React project
-                bat 'docker build -t react-app:latest .'
+                bat 'docker build -t react-app:latest .' // Build the Docker image
             }
         }
-        
 
         stage('Test') {
             steps {
@@ -48,19 +44,15 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Netlify...'
-                    echo "Netlify Auth Token: %NETLIFY_AUTH_TOKEN%"
-                    echo "Netlify Site ID: %SITE_ID%"
-                    bat 'npm run build' // Ensure the build directory is fresh
                     bat 'C:\\Users\\aadig\\AppData\\Roaming\\npm\\netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
                 }
             }
         }
-        
+
         stage('Deploy to Docker Container') {
             steps {
                 script {
                     echo 'Deploying the application to a Docker container...'
-                    // Stop any running containers and deploy a new one using Docker Compose
                     bat '''
                         docker-compose down
                         docker-compose up -d --build
@@ -69,19 +61,18 @@ pipeline {
             }
         }
 
-        
         stage('Datadog Monitoring and Alerting') {
             steps {
                 script {
                     echo 'Sending custom deployment event to Datadog...'
-                    withCredentials([string(credentialsId: 'datadog_api_key', variable: 'DATADOG_API_KEY')]) {
+                    withCredentials([string(credentialsId: 'ce2a7b9df93a621a8a401cd062f01151', variable: 'DATADOG_API_KEY')]) {
                         bat """
                         curl -X POST -H "Content-type: application/json" -d "{\\"title\\": \\"Deployment completed for ${DOCKER_IMAGE}\\", \\"text\\": \\"Deployment done at %DATE% %TIME%\\", \\"priority\\": \\"normal\\", \\"tags\\": [\\"environment:production\\", \\"project:jenkinshd\\"], \\"alert_type\\": \\"info\\"}" "https://api.datadoghq.com/api/v1/events?api_key=%DATADOG_API_KEY%"
                         """
                     }
                 }
             }
-    }
+        }
 
         stage('Deploy') {
             steps {

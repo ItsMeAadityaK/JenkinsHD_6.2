@@ -4,6 +4,7 @@ pipeline {
     environment {
         NETLIFY_AUTH_TOKEN = 'nfp_v1ZFAE8wo8ab7XDha8jCg7gwNWsXePeE4046' // Netlify Access Token
         SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
+        DATADOG_API_KEY = credentials('ce2a7b9df93a621a8a401cd062f01151')
     }
 
     stages {
@@ -41,6 +42,16 @@ pipeline {
                     echo "Netlify Site ID: %SITE_ID%"
                     bat 'npm run build' // Ensure the build directory is fresh
                     bat 'C:\\Users\\aadig\\AppData\\Roaming\\npm\\netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
+                }
+            }
+        }
+        
+        stage('Datadog Monitoring and Alerting') {
+            steps {
+                script {
+                    echo 'Sending metrics to Datadog...'
+                    // Send build metrics to Datadog using the Datadog plugin
+                    datadogStep tags: 'env:production,service:jenkins'
                 }
             }
         }

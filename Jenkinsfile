@@ -33,7 +33,7 @@ pipeline {
                 bat 'docker build -t react-app:latest .'
             }
         }
-        }
+        
 
         stage('Test') {
             steps {

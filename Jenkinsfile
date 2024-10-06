@@ -37,8 +37,15 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Netlify...'
-                    bat 'npm run build' // Ensure the build directory is fresh
-                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID%'
+                    // Debugging: print environment variables
+                    echo "Netlify Auth Token: %NETLIFY_AUTH_TOKEN%"
+                    echo "Netlify Site ID: %SITE_ID%"
+
+                    // Ensure the build directory exists and is fresh
+                    bat 'npm run build'
+                    
+                    // Verbose deploy to Netlify for better logging
+                    bat 'netlify deploy --dir=./build --prod --auth=%NETLIFY_AUTH_TOKEN% --site=%SITE_ID% --verbose'
                 }
             }
         }

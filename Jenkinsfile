@@ -61,12 +61,13 @@ pipeline {
                     echo 'Deploying the application to a Docker container...'
                     // Stop any running containers and deploy a new one using Docker Compose
                     bat '''
-                        docker-compose down  # Stop any running containers
-                        docker-compose up -d --build  # Build and start the new container in detached mode
+                        docker-compose down
+                        docker-compose up -d --build
                     '''
                 }
             }
         }
+
         
         stage('Datadog Monitoring and Alerting') {
             steps {

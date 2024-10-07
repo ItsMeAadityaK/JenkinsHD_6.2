@@ -5,6 +5,7 @@ pipeline {
         NETLIFY_AUTH_TOKEN = 'nfp_v1ZFAE8wo8ab7XDha8jCg7gwNWsXePeE4046' // Netlify Access Token
         SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
         DOCKER_IMAGE = 'react-app:latest' // Docker image
+        SONAR_PROJECT_KEY = 'sqp_08c6375330de8586cca9c93763da4b59370fc489' // SonarQube project key
     }
 
     stages {
@@ -23,6 +24,17 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'npm run build' // Build the React project
+            }
+        }
+
+        stage('Code Quality Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('Local SonarQube') {
+                        // This runs the SonarQube scanner
+                        bat 'sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONAR_TOKEN}'
+                    }
+                }
             }
         }
 

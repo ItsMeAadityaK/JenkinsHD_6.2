@@ -31,7 +31,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('sonar-qube') { // Match this with the name in Jenkins
+                    withSonarQubeEnv('My React App') { // Match this with the name in Jenkins
                         bat "C:\\sonar-scanner\\bin\\sonar-scanner.bat -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONAR_TOKEN}"
                     }
                 }

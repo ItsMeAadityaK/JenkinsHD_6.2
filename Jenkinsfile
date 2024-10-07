@@ -8,7 +8,7 @@ pipeline {
         SONAR_PROJECT_KEY = 'My-React-App' // SonarQube project key
         SONAR_TOKEN = credentials('Sonar_qube') // Reference to SonarQube token stored in Jenkins credentials
     }
-    }
+    
 
     stages {
         stage('Checkout') {

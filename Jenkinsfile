@@ -8,7 +8,6 @@ pipeline {
         SONAR_PROJECT_KEY = 'sonar-qube' // SonarQube project key
         SONAR_TOKEN = credentials('sonar-qube') // Reference to SonarQube token stored in Jenkins credentials
     }
-    
 
     stages {
         stage('Checkout') {
@@ -32,13 +31,12 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('My-React-App') {
+                    withSonarQubeEnv('sonar-qube') { // Match this with the name in Jenkins
                         bat "C:\\sonar-scanner\\bin\\sonar-scanner.bat -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONAR_TOKEN}"
                     }
                 }
             }
         }
-
 
         stage('Docker Build') {
             steps {
@@ -87,7 +85,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy') {
             steps {

@@ -6,6 +6,8 @@ pipeline {
         SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
         DOCKER_IMAGE = 'react-app:latest' // Docker image
         SONAR_PROJECT_KEY = 'My-React-App' // SonarQube project key
+        SONAR_TOKEN = credentials('Sonar_qube') // Reference to SonarQube token stored in Jenkins credentials
+    }
     }
 
     stages {
@@ -30,11 +32,8 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'Sonar_qube', variable: 'SONAR_TOKEN')]) {
-                        withSonarQubeEnv('My-React-App') {
-                            // Replace with the full path to sonar-scanner.bat if it's not in the PATH
-                            bat 'C:\\sonar-scanner\\bin\\sonar-scanner.bat -D"sonar.projectKey=${SONAR_PROJECT_KEY}" -D"sonar.sources=./src" -D"sonar.host.url=http://localhost:9000" -D"sonar.login=%SONAR_TOKEN%"'
-                        }
+                    withSonarQubeEnv('My-React-App') {
+                        bat "C:\\sonar-scanner\\bin\\sonar-scanner.bat -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONAR_TOKEN}"
                     }
                 }
             }

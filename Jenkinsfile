@@ -30,7 +30,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('Local SonarQube') {
+                    withSonarQubeEnv('My React App') {
                         withCredentials([string(credentialsId: 'Sonar_qube', variable: 'SONAR_TOKEN')]) {
                             bat "sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=./src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=%SONAR_TOKEN%"
                         }

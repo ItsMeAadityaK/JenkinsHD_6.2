@@ -5,8 +5,8 @@ pipeline {
         NETLIFY_AUTH_TOKEN = 'nfp_v1ZFAE8wo8ab7XDha8jCg7gwNWsXePeE4046' // Netlify Access Token
         SITE_ID = '873bd20a-3bba-414d-b418-d9823f50875f' // Netlify Site ID
         DOCKER_IMAGE = 'react-app:latest' // Docker image
-        SONAR_PROJECT_KEY = 'My-React-App' // SonarQube project key
-        SONAR_TOKEN = credentials('Sonar_qube') // Reference to SonarQube token stored in Jenkins credentials
+        SONAR_PROJECT_KEY = 'sonar-qube' // SonarQube project key
+        SONAR_TOKEN = credentials('sonar-qube') // Reference to SonarQube token stored in Jenkins credentials
     }
     
 

@@ -32,12 +32,14 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'Sonar_qube', variable: 'SONAR_TOKEN')]) {
                         withSonarQubeEnv('My-React-App') {
-                            bat 'sonar-scanner.bat -D"sonar.projectKey=${SONAR_PROJECT_KEY}" -D"sonar.sources=./src" -D"sonar.host.url=http://localhost:9000" -D"sonar.login=%SONAR_TOKEN%"'
+                            // Replace with the full path to sonar-scanner.bat if it's not in the PATH
+                            bat 'C:\\sonar-scanner\\bin\\sonar-scanner.bat -D"sonar.projectKey=${SONAR_PROJECT_KEY}" -D"sonar.sources=./src" -D"sonar.host.url=http://localhost:9000" -D"sonar.login=%SONAR_TOKEN%"'
                         }
                     }
                 }
             }
         }
+
 
         stage('Docker Build') {
             steps {
